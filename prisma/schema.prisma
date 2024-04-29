@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(cuid())
+
+  email    String @unique
+  password String
+
+  name     String
+  username String   @unique
+  review   Review[]
+  Blog     Blog[]
+}
+
+model Category {
+  id String @id @default(cuid())
+
+  name     String
+  img      String
+  products Product[]
+}
+
+model Color {
+  id String @id @default(cuid())
+
+  name String
+
+  products Product[]
+}
+
+model Offer {
+  id String @id @default(cuid())
+
+  offer    Int
+  products Product[]
+}
+
+model Review {
+  id String @id @default(cuid())
+
+  rating  Int
+  comment String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  products      Product[]
+  replyToReview ReplyToReview[]
+}
+
+model ReplyToReview {
+  id String @id @default(cuid())
+
+  comment String
+
+  review   Review @relation(fields: [reviewId], references: [id])
+  reviewId String
+}
+
+model Product {
+  id String @id @default(cuid())
+
+  name         String
+  price        Float
+  description  String
+  measurements String
+  img          String
+  createdAt    DateTime @default(now())
+
+  colors  Color[]
+  offer   Offer?  @relation(fields: [offerId], references: [id])
+  offerId String?
+
+  reviews Review[]
+
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+}
+
+model Blog {
+  id String @id @default(cuid())
+
+  title     String
+  content1  String
+  content2  String
+  content3  String
+  img       String[] @default(["https://utfs.io/f/c651cb93-f59b-4a27-b64f-fa6b8712c537-9947q2.jpg"])
+  type      String   @default("featured")
+  createdAt DateTime @default(now())
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+}
