@@ -5,7 +5,11 @@ const nextConfig = {
         remotePatterns: [{
             hostname: '**'
         }]
-    }
+    },
+
+    experimental: {
+        missingSuspenseWithCSRBailout: false
+    },
 };
 
 export default nextConfig;
