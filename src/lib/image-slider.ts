@@ -1,3 +1,4 @@
+// Массив картинок для слайдера
 export const images = [
   {
     id: "image-1",

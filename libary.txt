@@ -1,0 +1,3 @@
+tanstack react-query - используется для запросов на сервер
+аналоги: fetch() и axios
+fetch('https//verve-web-app.vercel.app') - возвращает данные

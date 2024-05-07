@@ -10,6 +10,7 @@ interface IProps {
 }
 
 export const Provider: FC<IProps> = ({ children }) => {
+  // хук useState - хранит состояние внутри компонента
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
