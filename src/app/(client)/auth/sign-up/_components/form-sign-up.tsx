@@ -86,7 +86,7 @@ export const FormSignUp: FC = ({}) => {
               render={({ field }) => (
                 <>
                   <Checkbox
-                    value={field.value}
+                    // value={field.value}
                     onCheckedChange={field.onChange}
                     className="w-5 h-5 text-[--neutral-04]"
                   />
