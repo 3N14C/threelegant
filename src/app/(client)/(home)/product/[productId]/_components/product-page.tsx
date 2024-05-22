@@ -1,36 +1,57 @@
-import { FC } from "react";
-import prisma from "@/prisma-client";
+"use client";
+
+import { getProductById } from "@/actions/product/get-by-id";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
-import Image from "next/image";
-import { RatingStars } from "../../../_components/ui/rating-stars";
-import { ProductPrice } from "../../../_components/ui/product-price";
-import { AddToCartCounter } from "@/components/add-to-cart-counter";
-import { WishlistButton } from "@/components/wishlist-button";
 import { Button } from "@/components/ui/button";
+import { WishlistButton } from "@/components/wishlist-button";
 import { shopParams } from "@/constants/shop-params";
-
-const getProductById = async (id: string) => {
-  return prisma.product.findUnique({
-    where: {
-      id: id,
-    },
-
-    include: {
-      category: true,
-      offer: true,
-    },
-  });
-};
+import { productNavigation } from "@/lib/product-navigation";
+import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
+import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
+import { FC } from "react";
+import { ProductPrice } from "../../../_components/ui/product-price";
+import { RatingStars } from "../../../_components/ui/rating-stars";
+import { determineReview } from "@/functions/determine-review";
+import { useCart } from "@/store/cart-store";
+import { toast } from "sonner";
+import { TProduct } from "@/types/product.interface";
+import { ProductWithCreatedAt } from "../../../_components/ui/product-card";
 
 interface IProps {
   id: string;
 }
 
-export const ProductPage: FC<IProps> = async ({ id }) => {
-  const product = await getProductById(id);
+export const ProductPage: FC<IProps> = ({ id }) => {
+  const { items, addItem } = useCart();
+
+  const [take] = useQueryState("take", parseAsInteger.withDefault(5));
+  const [productPage, setProductPage] = useQueryState(
+    "productPage",
+    parseAsString
+  );
+
+  const { data: product } = useQuery({
+    queryKey: ["product-by-id"],
+    queryFn: async () => {
+      const response = await getProductById({ id, take: take });
+
+      return response;
+    },
+  });
+
+  const handleAddToCart = (id: string) => {
+    if (items.some((item) => item.id === id))
+      return toast.error("Товар уже в корзине");
+
+    addItem(product as TProduct & ProductWithCreatedAt);
+
+    toast.success("Товар добавлен в корзину");
+  };
 
   return (
-    <div className="lg:w-[1440px] lg:mx-auto">
+    <div className="">
       <Breadcrumbs
         links={[
           { title: "Shop", href: `/shop?categoryId=all-rooms&${shopParams}` },
@@ -56,7 +77,8 @@ export const ProductPage: FC<IProps> = async ({ id }) => {
             <div className="flex items-center gap-3">
               <RatingStars />
               <p className="capitalize text-[12px] leading-[167%] text-[--neutral-07]">
-                11 reviews
+                {product?.reviews.length}{" "}
+                {determineReview(product?.reviews.length ?? 0)}
               </p>
             </div>
 
@@ -70,16 +92,8 @@ export const ProductPage: FC<IProps> = async ({ id }) => {
 
             <ProductPrice
               price={product?.price}
-              offer={product?.offer?.offer}
               classNamePrice="font-medium text-[28px] leading-[121%] -tracking-[0.02rem]"
-              classNameOffer="font-medium text-[20px] leading-[140%]"
             />
-
-            <div className="mt-[50px]">
-              <p className="text-base leading-[162%] text-[--neutral-05]">
-                Offer expires in
-              </p>
-            </div>
 
             <div className="flex flex-col gap-6">
               <div className="mt-[50px] flex flex-col gap-2">
@@ -90,21 +104,12 @@ export const ProductPage: FC<IProps> = async ({ id }) => {
                   {product?.measurements}
                 </p>
               </div>
-
-              <div className="">
-                <p className="text-[--neutral-05] text-base leading-[162%]">
-                  Choose Color
-                </p>
-                Colors*
-              </div>
             </div>
 
             <div className="flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <AddToCartCounter />
-                <WishlistButton />
-              </div>
+              <WishlistButton />
               <Button
+                onClick={() => product?.id && handleAddToCart(product?.id)}
                 size={"lg"}
                 className="w-full py-7 font-medium text-lg leading-[178%] -tracking-[0.02rem]"
               >
@@ -132,6 +137,26 @@ export const ProductPage: FC<IProps> = async ({ id }) => {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="mt-[50px] flex items-center gap-20">
+          {productNavigation.map((nav) => (
+            <div
+              key={nav.id}
+              onClick={() => setProductPage(nav.id)}
+              className={cn(
+                "text-[--neutral-04] transition duration-300 cursor-pointer",
+                {
+                  "border-b border-b-[--primary-01] text-[--primary-01]":
+                    nav.id === productPage,
+                }
+              )}
+            >
+              <p className="text-lg leading-[178%] font-medium -tracking-[0.02em]">
+                {nav.name}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </div>

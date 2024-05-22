@@ -1,10 +1,17 @@
+"use client";
+
 import { Input } from "@/components/ui/input";
 import { Mail } from "lucide-react";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { FC } from "react";
 
 export const ContactUsBanner: FC = () => {
+  const pathname = usePathname();
+
+  if (pathname.includes("/checkout")) return null;
+
   return (
     <div className="relative">
       <Image

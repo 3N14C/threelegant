@@ -96,13 +96,6 @@ export const FormSignUp: FC = ({}) => {
 
             <p className="text-[--neutral-04] font-[400] lg:text-base text-sm">
               Я соглашаюсь с{" "}
-              {/* <Button
-                size={"sm"}
-                variant={"link"}
-                className="text-[--neutral-07] font-[600] lg:text-base text-sm"
-              >
-                Политикой конфиденциальности
-              </Button>{" "} */}
               <Link
                 href={"/"}
                 className="text-[--neutral-07] font-[600] lg:hover:underline lg:hover:underline-offset-8"

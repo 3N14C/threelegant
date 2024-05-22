@@ -7,7 +7,6 @@ import { NewArrivals } from "./_components/new-arrivals-view";
 import { CategorySkeleton } from "@/components/skeletons/category-skeleton";
 import { ServicesView } from "./_components/services-view";
 import { SaleBanner } from "./_components/ui/sale-banner";
-import { ArticlesView } from "./_components/articles-view";
 
 interface Props {}
 
@@ -40,12 +39,6 @@ const Page: NextPage<Props> = ({}) => {
 
       <div className="mt-[50px] lg:w-[1440px] lg:mx-auto">
         <SaleBanner />
-      </div>
-
-      <div className="mt-[50px] lg:w-[1440px] lg:mx-auto mx-[40px]">
-        <Suspense fallback={<>Loading...</>}>
-          <ArticlesView />
-        </Suspense>
       </div>
     </div>
   );

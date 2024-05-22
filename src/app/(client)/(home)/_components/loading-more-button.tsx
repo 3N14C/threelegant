@@ -4,6 +4,7 @@ import { FC } from "react";
 
 interface IProps {
   onClick: () => void;
+  // disabled?: boolean;
 }
 
 export const LoadingMoreButton: FC<IProps> = ({ onClick }) => {

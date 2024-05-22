@@ -1,5 +1,6 @@
 "use client";
 
+import { shopParams } from "@/constants/shop-params";
 import { useViewOffer } from "@/store/offer-view-store";
 import { ArrowRight, TicketPercent, X } from "lucide-react";
 import Link from "next/link";
@@ -15,7 +16,7 @@ export const OfferBanner: FC = () => {
         <p className="flex items-center gap-2 text-[--neutral-05] lg:text-base text-[12px] font-semibold lg:leading-[157%] leading-[167%]">
           30% off storewide - Limited time!{" "}
           <Link
-            href={"/shop"}
+            href={`/shop?${shopParams}`}
             className="capitalize text-[--blue] font-medium text-base leading-[171%] border-b border-[--blue] lg:flex hidden items-center gap-2"
           >
             shop now <ArrowRight className="w-4 h-4" />

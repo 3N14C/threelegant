@@ -22,7 +22,8 @@ model User {
   name     String
   username String   @unique
   review   Review[]
-  Blog     Blog[]
+  blog     Blog[]
+  order    Order[]
 }
 
 model Category {
@@ -41,21 +42,14 @@ model Color {
   products Product[]
 }
 
-model Offer {
-  id String @id @default(cuid())
-
-  offer    Int
-  products Product[]
-}
-
 model Review {
   id String @id @default(cuid())
 
   rating  Int
   comment String
 
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
 
   products      Product[]
   replyToReview ReplyToReview[]
@@ -81,13 +75,13 @@ model Product {
   createdAt    DateTime @default(now())
 
   colors  Color[]
-  offer   Offer?  @relation(fields: [offerId], references: [id])
   offerId String?
 
   reviews Review[]
 
   category   Category @relation(fields: [categoryId], references: [id])
   categoryId String
+  order      Order[]
 }
 
 model Blog {
@@ -103,4 +97,31 @@ model Blog {
 
   user   User?   @relation(fields: [userId], references: [id])
   userId String?
+}
+
+model Order {
+  id String @id @default(cuid())
+
+  // CONTACT INFO
+  firstName String
+  lastName  String
+  email     String
+
+  // ADDRESS INFO
+  city    String
+  street  String
+  zipCode String
+
+  // PAYMENT INFO
+  card String
+  date String
+  cvc  String
+
+  code      String
+  totalSum  Int
+  createdAt DateTime @default(now())
+
+  products Product[]
+  user     User?     @relation(fields: [userId], references: [id])
+  userId   String?
 }

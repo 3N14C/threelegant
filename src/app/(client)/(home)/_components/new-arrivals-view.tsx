@@ -1,9 +1,10 @@
-import prisma from "@/prisma-client";
+import prisma from "@/lib/prisma-client";
 import { FC } from "react";
-import { ProductCard } from "./ui/product-card";
+import { ProductCard, ProductWithCreatedAt } from "./ui/product-card";
 import { LinkUnderline } from "./ui/link-underline";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { shopParams } from "@/constants/shop-params";
+import { TProduct } from "@/types/product.interface";
 
 const getNewArrivalsProducts = async () => {
   const products = await prisma.product.findMany({
@@ -11,10 +12,6 @@ const getNewArrivalsProducts = async () => {
       createdAt: {
         gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
       },
-    },
-
-    include: {
-      offer: true,
     },
   });
 
@@ -42,7 +39,10 @@ export const NewArrivals: FC = async () => {
       <ScrollArea className="mt-[50px] w-full whitespace-nowrap" type="hover">
         <div className="flex items-center gap-6 w-max mb-12">
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard
+              key={product.id}
+              product={product as TProduct & ProductWithCreatedAt}
+            />
           ))}
         </div>
 

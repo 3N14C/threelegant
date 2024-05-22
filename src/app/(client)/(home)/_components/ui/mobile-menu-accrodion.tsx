@@ -6,6 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { shopParams } from "@/constants/shop-params";
 import { Link } from "next-view-transitions";
 import { FC, useState } from "react";
 
@@ -38,7 +39,7 @@ export const MobileMenuAccordion: FC<IProps> = ({ open, setOpen }) => {
         Home
       </Link>
 
-      <Accordion type="multiple" className="-space-y-[16px]">
+      <Accordion type="multiple" className="">
         <AccordionItem value="shop">
           <AccordionTrigger>Shop</AccordionTrigger>
           <AccordionContent>
@@ -47,7 +48,7 @@ export const MobileMenuAccordion: FC<IProps> = ({ open, setOpen }) => {
                 <Link
                   onClick={() => setOpen(false)}
                   key={category.id}
-                  href={`/shop?categoryId=${category.id}`}
+                  href={`/shop?categoryId=${category.id}&${shopParams}`}
                   className="capitalize"
                 >
                   {category.name}

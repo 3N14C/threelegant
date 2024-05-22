@@ -1,14 +1,18 @@
 import { NextPage } from "next";
-import { ProductPage } from "./_components/product-page";
 import { Suspense } from "react";
+import { ProductPage } from "./_components/product-page";
 
 interface Props {
   params: {
     productId: string;
   };
+
+  searchParams?: {
+    productPage: string;
+  };
 }
 
-const Page: NextPage<Props> = ({ params }) => {
+const Page: NextPage<Props> = ({ params, searchParams }) => {
   return (
     <div>
       <div className="mt-[50px]">

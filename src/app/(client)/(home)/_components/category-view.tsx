@@ -1,7 +1,8 @@
-import prisma from "@/prisma-client";
+import prisma from "@/lib/prisma-client";
 import Image from "next/image";
 import { FC } from "react";
 import { LinkUnderline } from "./ui/link-underline";
+import { shopParams } from "@/constants/shop-params";
 
 const getCategories = async () => {
   const categories = await prisma.category.findMany({});
@@ -33,7 +34,10 @@ export const CategoryView: FC = async () => {
               <div className="absolute lg:top-10 top-5 left-5">
                 <p className="font-[500] text-[34px]">{category.name}</p>
 
-                <LinkUnderline title="shop now" href="/shop" />
+                <LinkUnderline
+                  title="shop now"
+                  href={`/shop?categoryId=${category.id}&${shopParams}`}
+                />
               </div>
             </div>
           ))[0]
@@ -58,7 +62,10 @@ export const CategoryView: FC = async () => {
                     {category.name}
                   </p>
 
-                  <LinkUnderline title="shop now" href="/shop" />
+                  <LinkUnderline
+                    title="shop now"
+                    href={`/shop?categoryId=${category.id}&${shopParams}`}
+                  />
                 </div>
               </div>
             )

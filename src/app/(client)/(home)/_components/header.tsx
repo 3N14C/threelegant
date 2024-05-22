@@ -8,7 +8,6 @@ import { usePathname } from "next/navigation";
 import { FC } from "react";
 import { CartMenu } from "./ui/cart-menu";
 import { MobileBurgerMenu } from "./ui/mobile-burger-menu";
-import { blogParams } from "@/constants/blog-params";
 import { shopParams } from "@/constants/shop-params";
 
 export const navbar = [
@@ -28,12 +27,6 @@ export const navbar = [
     id: "product",
     name: "Product",
     href: "/product",
-  },
-
-  {
-    id: "blog",
-    name: "Blog",
-    href: `/blog?${blogParams}`,
   },
 
   {

@@ -1,14 +1,19 @@
 "use client";
 
+import { Checkbox } from "@/components/ui/checkbox";
+import { priceVariants } from "@/lib/price-variants";
 import { cn } from "@/lib/utils";
-import { trpc } from "@/trpc/trpc-client";
+import { Prisma } from "@prisma/client";
 import { Settings2 } from "lucide-react";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { FC } from "react";
 import { Filters } from "../_components/filters";
-import { BreadcrumbsImage } from "../_components/ui/breadcrumbs-image";
 import { LoadingMoreButton } from "../_components/loading-more-button";
-import { Prisma } from "@prisma/client";
+import { BreadcrumbsImage } from "../_components/ui/breadcrumbs-image";
+import { CheckedState } from "@radix-ui/react-checkbox";
+import { useQuery } from "@tanstack/react-query";
+import { getAllCategories } from "@/actions/categories/get-all-categories";
+import { getProductsBySlug } from "@/actions/product/get-by-slug";
 
 interface IProps {
   children: React.ReactNode;
@@ -16,16 +21,37 @@ interface IProps {
 
 const Layout: FC<IProps> = ({ children }) => {
   const [categoryId, setCategoryId] = useQueryState("categoryId");
-  const { data: categories } = trpc.getAllCategories.useQuery();
+  const { data: categories } = useQuery({
+    queryKey: ["all-categories"],
+    queryFn: async () => {
+      const response = await getAllCategories();
+
+      return response.data;
+    },
+  });
 
   const [take, setTake] = useQueryState("take", parseAsInteger);
   const [sortBy] = useQueryState("sortBy" as Prisma.SortOrder);
-  const [price] = useQueryState("price", parseAsInteger);
-  const { data: products } = trpc.getProductsBySlug.useQuery({
-    categoryId: categoryId || "all-rooms",
-    price: price || 10,
-    sortBy: sortBy as Prisma.SortOrder,
-    take: take || 9,
+  const [price, setPrice] = useQueryState("price", parseAsInteger);
+  // const { data: products } = trpc.getProductsBySlug.useQuery({
+  //   categoryId: categoryId || "all-rooms",
+  //   price: price || 10,
+  //   sortBy: sortBy as Prisma.SortOrder,
+  //   take: take || 9,
+  // });
+
+  const { data: products } = useQuery({
+    queryKey: ["product-by-slug"],
+    queryFn: async () => {
+      const response = await getProductsBySlug({
+        categoryId: categoryId || "all-rooms",
+        price: price || 0,
+        sortBy: sortBy as Prisma.SortOrder,
+        take: take || 9,
+      });
+
+      return response;
+    },
   });
 
   return (
@@ -41,7 +67,7 @@ const Layout: FC<IProps> = ({ children }) => {
 
       <div className="lg:max-w-[1440px] lg:mx-auto mt-[60px] overflow-x-hidden">
         <div className="grid grid-cols-6 items-start">
-          <div className="">
+          <div className="pr-10">
             <div className="flex items-center gap-2 col-span-1">
               <Settings2 />
               <p className="font-semibold text-[20px] leading-[160%]">Filter</p>
@@ -103,6 +129,29 @@ const Layout: FC<IProps> = ({ children }) => {
               <p className="uppercase font-semibold text-base leading-[162%]">
                 price
               </p>
+
+              <div className="flex flex-col gap-3">
+                {priceVariants.map((priceVariant) => (
+                  <div
+                    key={priceVariant.id}
+                    className="flex justify-between items-center"
+                  >
+                    <p className="text-[--neutral-04] font-semibold text-sm">
+                      от{" "}
+                      {priceVariant.priceFrom.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "USD",
+                        maximumFractionDigits: 2,
+                      })}
+                    </p>
+
+                    <Checkbox
+                      onClick={() => setPrice(priceVariant.priceFrom)}
+                      checked={priceVariant.priceFrom === price}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { FC } from "react";
 import { LinkUnderline } from "./link-underline";
+import { shopParams } from "@/constants/shop-params";
 
 export const SaleBanner: FC = () => {
   return (
@@ -27,7 +28,7 @@ export const SaleBanner: FC = () => {
           stylish makeover
         </p>
 
-        <LinkUnderline title="Shop Now" href="/shop" />
+        <LinkUnderline title="Shop Now" href={`/shop?${shopParams}`} />
       </div>
     </div>
   );

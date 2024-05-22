@@ -9,15 +9,17 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
 import { ProductPrice } from "./product-price";
+import { productParams } from "@/constants/product-params";
+import { useCart } from "@/store/cart-store";
+import { toast } from "sonner";
+import { TProduct } from "@/types/product.interface";
 
-export type ProductWithCreatedAt =
-  | (Omit<
-      Prisma.ProductGetPayload<{ include: { offer: true } }>,
-      "createdAt"
-    > & {
-      createdAt: string;
-    })
-  | Prisma.ProductGetPayload<{ include: { offer: true } }>;
+export type ProductWithCreatedAt = Omit<
+  Prisma.ProductGetPayload<{}>,
+  "createdAt"
+> & {
+  createdAt: string;
+};
 
 interface IProps {
   product: ProductWithCreatedAt;
@@ -26,10 +28,22 @@ interface IProps {
 
 export const ProductCard: FC<IProps> = ({ product, orientation }) => {
   const [hover, setHover] = useState<string | null>(null);
+  const { addItem, items } = useCart();
+
+  const handleAddToCart = (id: string) => {
+    if (items.some((item) => item.id === id)) {
+      toast.error("Товар уже в корзине");
+      return;
+    }
+
+    addItem(product as TProduct & ProductWithCreatedAt);
+    toast.success("Товар добавлен в корзину");
+  };
 
   if (orientation === "table") {
     return (
-      <div
+      <Link
+        href={`/product/${product.id}?${productParams}`}
         className="w-5/6"
         onMouseEnter={() => setHover(product.id)}
         onMouseLeave={() => setHover(null)}
@@ -67,22 +81,21 @@ export const ProductCard: FC<IProps> = ({ product, orientation }) => {
             <div className="mt-8">
               <ProductPrice
                 price={product.price}
-                offer={product.offer?.offer}
                 classNamePrice="font-medium text-[28px] leading-[121%] -tracking-[0.02rem]"
-                classNameOffer="font-medium text-[20px] leading-[140%]"
               />
             </div>
           </div>
         </div>
 
         <Button
+          onClick={() => handleAddToCart(product.id)}
           className={cn("w-full opacity-0 transition-all duration-300 py-7", {
             "opacity-100": hover === product.id,
           })}
         >
           Add to Cart
         </Button>
-      </div>
+      </Link>
     );
   }
 
@@ -92,7 +105,7 @@ export const ProductCard: FC<IProps> = ({ product, orientation }) => {
       onMouseEnter={() => setHover(product.id)}
       onMouseLeave={() => setHover(null)}
     >
-      <Link href={`/product/${product.id}`}>
+      <Link href={`/product/${product.id}?${productParams}`}>
         <Image
           src={product.img}
           alt={product.name}
@@ -114,18 +127,17 @@ export const ProductCard: FC<IProps> = ({ product, orientation }) => {
         </div>
 
         <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-full">
-          <Button className="w-full">Add to cart</Button>
+          <Button
+            onClick={() => handleAddToCart(product.id)}
+            className="w-full"
+          >
+            Add to cart
+          </Button>
         </div>
       </div>
 
       <div className="absolute top-5 left-5 font-[700] text-base flex flex-col gap-[10px]">
         <p className="uppercase text-[--neutral-07] text-center">new</p>
-
-        {product.offer?.offer && (
-          <p className="text-[--neutral-01] px-[15px] bg-[--green] rounded-sm">
-            -{product.offer?.offer}%
-          </p>
-        )}
       </div>
 
       <div className="font-[600] flex flex-col gap-1">
@@ -134,7 +146,7 @@ export const ProductCard: FC<IProps> = ({ product, orientation }) => {
           {product.name}
         </p>
 
-        <ProductPrice price={product.price} offer={product.offer?.offer} />
+        <ProductPrice price={product.price} />
       </div>
     </div>
   );
