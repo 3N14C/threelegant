@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
-import { ViewTransitions } from "next-view-transitions";
-import "./globals.css";
-import { Provider } from "@/providers/provider";
 import { Toaster } from "@/components/ui/sonner";
+import { Provider } from "@/providers/provider";
+import type { Metadata } from "next";
+import { ViewTransitions } from "next-view-transitions";
+import { Poppins } from "next/font/google";
+import "./globals.css";
 
 const poppins = Poppins({
   subsets: ["latin"],

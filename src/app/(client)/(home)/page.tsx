@@ -1,11 +1,11 @@
-import { NextPage } from "next";
-import { ImageSlider } from "./_components/ui/image-slider";
-import { SimplyText } from "./_components/simply-text";
-import { CategoryView } from "./_components/category-view";
-import { Suspense } from "react";
-import { NewArrivals } from "./_components/new-arrivals-view";
 import { CategorySkeleton } from "@/components/skeletons/category-skeleton";
+import { NextPage } from "next";
+import { Suspense } from "react";
+import { CategoryView } from "./_components/category-view";
+import { NewArrivals } from "./_components/new-arrivals-view";
 import { ServicesView } from "./_components/services-view";
+import { SimplyText } from "./_components/simply-text";
+import { ImageSlider } from "./_components/ui/image-slider";
 import { SaleBanner } from "./_components/ui/sale-banner";
 
 interface Props {}

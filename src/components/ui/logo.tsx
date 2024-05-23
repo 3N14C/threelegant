@@ -7,7 +7,12 @@ interface IProps {
 
 export const Logo: FC<IProps> = ({ className }) => {
   return (
-    <p className={cn("lg:text-[32px] text-base font-[500]", className)}>
+    <p
+      className={cn(
+        "lg:text-[32px] text-base font-[500] select-none",
+        className
+      )}
+    >
       3legant.
     </p>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 import { useCart } from "@/store/cart-store";
 import Image from "next/image";
 import { FC } from "react";
@@ -13,7 +14,11 @@ export const OrderSummary: FC = () => {
     <div className="border border-black rounded-lg p-10  h-fit">
       <p className="text-3xl font-bold tracking-wider mb-5">Ваш заказ</p>
 
-      <ScrollArea className="h-[550px]">
+      <ScrollArea
+        className={cn("", {
+          "h-[550px]": items.length > 3,
+        })}
+      >
         <div className="flex flex-col gap-10 lg:gap-5">
           {items.map((product) => (
             <div key={product.id} className="flex items-start">
@@ -47,7 +52,7 @@ export const OrderSummary: FC = () => {
         </div>
       </ScrollArea>
 
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 pt-2">
         {/* <InputCoupon /> */}
         <div className="flex items-center justify-between">
           <p>Доставка</p>

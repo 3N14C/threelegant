@@ -5,7 +5,7 @@ import { FC } from "react";
 
 interface IProps {
   title: string;
-  onClick: () => Promise<void | null>;
+  onClick?: () => Promise<void | null>;
 }
 
 export const ButtonAuth: FC<IProps> = ({ title, onClick }) => {

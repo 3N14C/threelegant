@@ -1,20 +1,19 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { signUp } from "@/actions/auth/sing-up";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { formSignUpSchema } from "@/zod-schema/form-sign-up-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { ButtonAuth } from "../../_components/ui/button-auth";
-import { useRouter } from "next/navigation";
 
 export const FormSignUp: FC = ({}) => {
   const router = useRouter();
-
   const {
     register,
     formState: { errors },
@@ -24,11 +23,20 @@ export const FormSignUp: FC = ({}) => {
     resolver: zodResolver(formSignUpSchema),
   });
 
+  const handleOnSubmit = async (data: z.infer<typeof formSignUpSchema>) => {
+    await signUp({
+      email: data.email,
+      name: data.name,
+      password: data.password,
+      username: data.username,
+    });
+  };
+
   return (
     <div className="">
       <form
         className="flex flex-col gap-[25px]"
-        onSubmit={handleSubmit((data) => console.log(data))}
+        onSubmit={handleSubmit(handleOnSubmit)}
       >
         <div className="">
           <Input
@@ -117,10 +125,7 @@ export const FormSignUp: FC = ({}) => {
           )}
         </div>
 
-        <ButtonAuth
-          title="Создать аккаунт"
-          onClick={async () => router.push("/")}
-        />
+        <ButtonAuth title="Создать аккаунт" />
       </form>
     </div>
   );

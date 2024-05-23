@@ -10,7 +10,8 @@ import { FC } from "react";
 export const ContactUsBanner: FC = () => {
   const pathname = usePathname();
 
-  if (pathname.includes("/checkout")) return null;
+  if (pathname.includes("/checkout") || pathname.includes("/profile"))
+    return null;
 
   return (
     <div className="relative">

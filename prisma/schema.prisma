@@ -20,10 +20,20 @@ model User {
   password String
 
   name     String
-  username String   @unique
+  username String    @unique
   review   Review[]
   blog     Blog[]
   order    Order[]
+  sessions Session[]
+}
+
+model Session {
+  id String @id @default(cuid())
+
+  expiresAt DateTime
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 }
 
 model Category {

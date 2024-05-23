@@ -9,35 +9,45 @@ import { FC } from "react";
 import { CartMenu } from "./ui/cart-menu";
 import { MobileBurgerMenu } from "./ui/mobile-burger-menu";
 import { shopParams } from "@/constants/shop-params";
+import { useQuery } from "@tanstack/react-query";
+import { getCurrentSession } from "@/actions/user/currentSession";
 
 export const navbar = [
   {
     id: "home",
-    name: "Home",
+    name: "Главная",
     href: "/",
   },
 
   {
     id: "shop",
-    name: "Shop",
+    name: "Каталог",
     href: `/shop?categoryId=all-rooms&${shopParams}`,
   },
 
   {
     id: "product",
-    name: "Product",
+    name: "Товары",
     href: "/product",
   },
 
   {
     id: "contact-us",
-    name: "Contact Us",
+    name: "Связаться с нами",
     href: "/contact-us",
   },
 ];
 
 export const Header: FC = () => {
   const pathname = usePathname();
+  const { data: user } = useQuery({
+    queryKey: ["current-session"],
+    queryFn: async () => {
+      const { user } = await getCurrentSession();
+
+      return user;
+    },
+  });
 
   return (
     <div className="px-[40px] lg:px-0">
@@ -67,7 +77,9 @@ export const Header: FC = () => {
 
         <div className="lg:flex hidden items-center gap-[20px]">
           <Search size={22} />
-          <User size={22} />
+          <Link href={`/profile/${user?.id}/account`}>
+            <User size={22} />
+          </Link>
           <CartMenu />
         </div>
 
