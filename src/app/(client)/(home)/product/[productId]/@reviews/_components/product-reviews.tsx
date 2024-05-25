@@ -13,6 +13,7 @@ import { parseAsInteger, useQueryState } from "nuqs";
 import { determineReview } from "@/functions/determine-review";
 import { User } from "lucia";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getCurrentSession } from "@/actions/user/currentSession";
 
 interface IProps {
   id: string;
@@ -28,8 +29,13 @@ export const ProductReviews: FC<IProps> = ({ id }) => {
     },
   });
 
-  const { data: user } = useQuery<User>({
-    queryKey: ["current-session"],
+  const { data: user } = useQuery({
+    queryKey: ["review-current-session"],
+    queryFn: async () => {
+      const { user } = await getCurrentSession();
+
+      return user;
+    },
   });
 
   const [take, setTake] = useQueryState("take", parseAsInteger.withDefault(5));
