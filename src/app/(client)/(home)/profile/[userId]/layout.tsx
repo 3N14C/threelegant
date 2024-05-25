@@ -8,11 +8,13 @@ interface IProps {
 
 const Layout: FC<IProps> = ({ children }) => {
   return (
-    <div className="lg:max-w-[1440px] lg:mx-auto">
-      <p className="text-5xl font-medium text-center mt-20">Мой Профиль</p>
+    <div className="lg:max-w-[1440px] lg:mx-auto px-4 lg:px-0">
+      <p className="lg:text-5xl text-3xl font-medium text-center mt-20">
+        Мой Профиль
+      </p>
 
-      <div className="flex items-start gap-20 mt-20">
-        <div className="flex flex-col gap-10 w-2/6">
+      <div className="flex lg:flex-row flex-col lg:items-start items-center gap-20 mt-20">
+        <div className="flex flex-col gap-10 lg:w-2/6">
           <UserAvatar />
 
           <ProfileNavbar />

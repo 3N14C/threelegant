@@ -9,9 +9,9 @@ interface IProps {
 export const ProductPrice: FC<IProps> = ({ price, classNamePrice }) => {
   return (
     <p className={cn("text-[--neutral-07] text-sm", classNamePrice)}>
-      {price?.toLocaleString("en-US", {
+      {price?.toLocaleString("ru-RU", {
         style: "currency",
-        currency: "USD",
+        currency: "RUB",
         maximumFractionDigits: 2,
       })}
     </p>

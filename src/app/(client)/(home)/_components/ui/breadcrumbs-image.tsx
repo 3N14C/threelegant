@@ -34,10 +34,10 @@ export const BreadcrumbsImage: FC<IProps> = ({
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center flex flex-col items-center gap-6">
         <Breadcrumbs links={links} />
 
-        <p className="font-medium text-[54px] -tracking-[0.02rem] leading-[107%] capitalize">
+        <p className="font-medium lg:text-[54px] text-[40px] -tracking-[0.02rem] leading-[107%] capitalize">
           {title}
         </p>
-        <p className="text-[20px] leading-[160%] text-[--neutral-07]">
+        <p className="lg:text-[20px] leading-[160%] text-[--neutral-07]">
           {subtitle}
         </p>
       </div>

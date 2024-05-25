@@ -1,12 +1,13 @@
 "use client";
 
 import { createReview } from "@/actions/review/create-review";
+import { getCurrentSession } from "@/actions/user/currentSession";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { reviewSchema } from "@/zod-schema/review-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Reply, Star } from "lucide-react";
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -18,8 +19,17 @@ interface IProps {
 }
 
 export const FormReview: FC<IProps> = ({ id }) => {
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState<number | null>(null);
   const queryClient = useQueryClient();
+
+  const { data: user } = useQuery({
+    queryKey: ["current-user-review"],
+    queryFn: async () => {
+      const { user } = await getCurrentSession();
+
+      return user;
+    },
+  });
 
   const {
     register,
@@ -32,18 +42,11 @@ export const FormReview: FC<IProps> = ({ id }) => {
   });
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: async (data: z.infer<typeof reviewSchema>) => {
-      const response = await createReview({
-        comment: data.comment,
-        productId: id,
-        rating: rating,
-      });
-
-      return response;
-    },
+    mutationFn: createReview,
 
     onSuccess: () => {
       reset();
+      setRating(null);
       toast.success("Отзыв добавлен");
 
       queryClient.invalidateQueries({
@@ -51,6 +54,15 @@ export const FormReview: FC<IProps> = ({ id }) => {
       });
     },
   });
+
+  const handleOnSubmit = async (data: z.infer<typeof reviewSchema>) => {
+    await mutateAsync({
+      ...data,
+      rating: rating,
+      productId: id,
+      userId: user?.id!,
+    });
+  };
 
   const handleChooseRating = (index: number) => {
     setRating(index);
@@ -65,7 +77,7 @@ export const FormReview: FC<IProps> = ({ id }) => {
             key={index + 1}
             size={25}
             className={cn("text-[--primary-01] cursor-pointer", {
-              "fill-[--primary-01]": index < rating,
+              "fill-[--primary-01]": rating && index < rating,
             })}
           />
         ))}
@@ -73,7 +85,7 @@ export const FormReview: FC<IProps> = ({ id }) => {
 
       <form
         className="flex items-center"
-        onSubmit={handleSubmit(async (data) => await mutateAsync(data))}
+        onSubmit={handleSubmit(handleOnSubmit)}
       >
         <div className="w-full relative">
           <Input

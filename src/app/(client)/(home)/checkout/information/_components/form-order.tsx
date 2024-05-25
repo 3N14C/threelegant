@@ -9,10 +9,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
 import { InputValidated } from "@/components/ui/input-validated";
 import { useCode } from "@/hooks/use-generate-code";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { createOrder } from "@/actions/order/post-order";
 import { useCart } from "@/store/cart-store";
 import { useRouter } from "next/navigation";
+import { User } from "lucia";
 
 export const FormOrder: FC = () => {
   const code = useCode();
@@ -22,7 +23,7 @@ export const FormOrder: FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors },
   } = useForm<
     z.infer<typeof formOrderSchema> & {
       code: string;
@@ -33,23 +34,12 @@ export const FormOrder: FC = () => {
     resolver: zodResolver(formOrderSchema),
   });
 
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: async (
-      data: z.infer<typeof formOrderSchema> & {
-        code: string;
-        totalSum: number;
-        productId: string[];
-      }
-    ) => {
-      const response = await createOrder({
-        ...data,
-        productId: items.map((product) => product.id),
-        code: code,
-        totalSum: totalPrice + shippingType.price,
-      });
+  const { data: user } = useQuery<User>({
+    queryKey: ["current-session"],
+  });
 
-      return response;
-    },
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: createOrder,
     onSuccess: (data) => {
       router.push(`/checkout/order/${data.id}`);
       clear();
@@ -63,7 +53,16 @@ export const FormOrder: FC = () => {
       productId: string[];
     }
   ) => {
-    await mutateAsync(data);
+    if (!user)
+      return router.replace("/auth/sign-in?callbackUrl=/checkout/information");
+
+    await mutateAsync({
+      ...data,
+      productId: items.map((product) => product.id),
+      code: code,
+      totalSum: totalPrice + shippingType.price,
+      userId: user.id,
+    });
   };
 
   return (

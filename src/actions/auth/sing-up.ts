@@ -3,7 +3,6 @@
 import { lucia } from "@/auth";
 import prisma from "@/lib/prisma-client";
 import { formSignUpWithoutAgree } from "@/zod-schema/form-sgin-up-without-agree-schema";
-import { formSignUpSchema } from "@/zod-schema/form-sign-up-schema";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";

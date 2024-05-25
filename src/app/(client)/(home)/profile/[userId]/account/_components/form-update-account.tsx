@@ -1,5 +1,6 @@
 "use client";
 
+import { getCurrentSession } from "@/actions/user/currentSession";
 import { updateUserById } from "@/actions/user/patch-by-id";
 import { Button } from "@/components/ui/button";
 import { InputValidated } from "@/components/ui/input-validated";
@@ -13,8 +14,13 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 export const FormUpdateAccount: FC = () => {
-  const { data: user } = useQuery<RegisteredDatabaseUserAttributes>({
-    queryKey: ["current-session"],
+  const { data: user, isLoading } = useQuery({
+    queryKey: ["account-data"],
+    queryFn: async () => {
+      const { user } = await getCurrentSession();
+
+      return user;
+    },
   });
 
   const {
@@ -26,12 +32,13 @@ export const FormUpdateAccount: FC = () => {
       name: user?.name,
       username: user?.username,
       email: user?.email,
+      oldPassword: "",
     },
     values: {
       name: user?.name!,
       username: user?.username!,
       email: user?.email!,
-      oldPassword: user?.password!,
+      oldPassword: "",
       newPassword: "",
     },
     resolver: zodResolver(updateProfileSchema),

@@ -1,8 +1,9 @@
-import { Lucia } from "lucia";
 import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
-import prisma from "./lib/prisma-client";
-import { cache } from "react";
+import { UserRole } from "@prisma/client";
+import { Lucia } from "lucia";
 import { cookies } from "next/headers";
+import { cache } from "react";
+import prisma from "./lib/prisma-client";
 
 const adapter = new PrismaAdapter(prisma.session, prisma.user);
 
@@ -17,8 +18,11 @@ export const lucia = new Lucia(adapter, {
     return {
       id: databaseUserAttributes.id,
       email: databaseUserAttributes.email,
+      password: databaseUserAttributes.password,
       name: databaseUserAttributes.name,
       username: databaseUserAttributes.username,
+      role: databaseUserAttributes.role,
+      isBlocked: databaseUserAttributes.isBlocked,
     };
   },
 });
@@ -71,4 +75,6 @@ interface DatabaseUserAttributes {
   password: string;
   name: string;
   username: string;
+  role: UserRole;
+  isBlocked: boolean;
 }

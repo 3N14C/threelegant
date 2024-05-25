@@ -15,6 +15,10 @@ export const GET = async (req: NextRequest, ctx: any) => {
       category: true,
       reviews: {
         take: +take,
+
+        include: {
+          user: true,
+        },
       },
     },
   });

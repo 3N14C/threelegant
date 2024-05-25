@@ -106,16 +106,13 @@ export const ProductPage: FC<IProps> = ({ id }) => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-4">
-              <WishlistButton />
-              <Button
-                onClick={() => product?.id && handleAddToCart(product?.id)}
-                size={"lg"}
-                className="w-full py-7 font-medium text-lg leading-[178%] -tracking-[0.02rem]"
-              >
-                Add to Cart
-              </Button>
-            </div>
+            <Button
+              onClick={() => product?.id && handleAddToCart(product?.id)}
+              size={"lg"}
+              className="w-full py-7 font-medium text-lg leading-[178%] -tracking-[0.02rem]"
+            >
+              Добавить в корзину
+            </Button>
 
             <div className="grid grid-cols-2 items-center mt-[50px]">
               <div className="flex flex-col gap-2">

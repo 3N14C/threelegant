@@ -4,6 +4,7 @@ import { useCart } from "@/store/cart-store";
 import { Link } from "next-view-transitions";
 import { FC } from "react";
 import { OrderSelect } from "./order-select";
+import { ButtonLink } from "@/components/ui/button-link";
 
 export const CartSummary: FC = () => {
   const { totalPrice, shippingType } = useCart();
@@ -28,12 +29,7 @@ export const CartSummary: FC = () => {
         </p>
       </div>
 
-      <Link
-        href={"/checkout/information"}
-        className="mt-5 bg-primary w-full h-12 px-4 py-2 text-primary-foreground hover:bg-primary/90 gap-3 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
-      >
-        К оформлению
-      </Link>
+      <ButtonLink href={"/checkout/information"}>К оформлению</ButtonLink>
     </div>
   );
 };

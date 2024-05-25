@@ -11,20 +11,26 @@ import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { ButtonAuth } from "../../_components/ui/button-auth";
+import { useMutation } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 
 export const FormSignUp: FC = ({}) => {
   const router = useRouter();
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
     handleSubmit,
     control,
   } = useForm<z.infer<typeof formSignUpSchema>>({
     resolver: zodResolver(formSignUpSchema),
   });
 
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: signUp,
+  });
+
   const handleOnSubmit = async (data: z.infer<typeof formSignUpSchema>) => {
-    await signUp({
+    await mutateAsync({
       email: data.email,
       name: data.name,
       password: data.password,
@@ -125,7 +131,9 @@ export const FormSignUp: FC = ({}) => {
           )}
         </div>
 
-        <ButtonAuth title="Создать аккаунт" />
+        <ButtonAuth disabled={isPending}>
+          {isPending ? <Loader2 className="animate-spin" /> : "Создать аккаунт"}
+        </ButtonAuth>
       </form>
     </div>
   );

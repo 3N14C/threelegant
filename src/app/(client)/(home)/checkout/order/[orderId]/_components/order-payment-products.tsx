@@ -3,6 +3,7 @@
 import { getOrderById } from "@/actions/order/get-by-id";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
+import { User } from "lucia";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { FC } from "react";
@@ -21,6 +22,10 @@ export const OrderProducts: FC<IProps> = ({ orderId }) => {
     },
   });
 
+  const { data: user } = useQuery<User>({
+    queryKey: ["current-session"],
+  });
+
   const orderDate =
     order &&
     new Date(order?.createdAt).toLocaleDateString("ru-RU", {
@@ -31,7 +36,7 @@ export const OrderProducts: FC<IProps> = ({ orderId }) => {
 
   return (
     <div className="flex flex-col gap-10">
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center lg:gap-0 gap-3">
         {order?.products.map((product) => (
           <div key={product.id} className="">
             <Image
@@ -39,13 +44,13 @@ export const OrderProducts: FC<IProps> = ({ orderId }) => {
               alt={product.name}
               width={1000}
               height={1000}
-              className="w-[200px] h-[200px]"
+              className="lg:w-[200px] lg:h-[200px] w-[100px] h-[100px]"
             />
           </div>
         ))}
       </div>
 
-      <div className="flex items-center justify-evenly">
+      <div className="flex items-center lg:justify-evenly justify-between">
         <div className="flex flex-col gap-3">
           <p className="text-[--neutral-04]">Номер заказа:</p>
           <p className="text-[--neutral-04]">Дата:</p>
@@ -67,7 +72,7 @@ export const OrderProducts: FC<IProps> = ({ orderId }) => {
 
       <div className="flex justify-center">
         <Link
-          href={"/profile/history"}
+          href={`/profile/${user?.id}/orders`}
           className="mt-5 bg-primary w-fit h-14 px-10 py-2 text-primary-foreground hover:bg-primary/90 gap-3 inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
         >
           История покупок

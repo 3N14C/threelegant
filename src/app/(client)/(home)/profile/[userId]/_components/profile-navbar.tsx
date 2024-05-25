@@ -1,6 +1,20 @@
 "use client";
 
+import { signOut } from "@/actions/auth/sign-out";
+import { getCurrentSession } from "@/actions/user/currentSession";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { User } from "lucia";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { FC } from "react";
@@ -50,10 +64,31 @@ const NavbarComponent: FC<IPropsNAvbarComponent> = ({
     );
 };
 
-export const ProfileNavbar: FC = () => {
+export const ProfileNavbar: FC = ({}) => {
+  const queryClient = useQueryClient();
   const pathname = usePathname();
   const parts = pathname.split("/");
   const currentPathname = parts.slice(0, -1).join("/");
+
+  const { data: user } = useQuery({
+    queryKey: ["current-session-profile"],
+    queryFn: async () => {
+      const { user } = await getCurrentSession();
+
+      return user;
+    },
+  });
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: signOut,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["current-session"] });
+    },
+  });
+
+  const handleSignOut = async () => {
+    await mutateAsync();
+  };
 
   return (
     <div className="flex flex-col gap-5">
@@ -67,7 +102,34 @@ export const ProfileNavbar: FC = () => {
         title="Заказы"
         link={{ id: "orders", href: `${currentPathname}/orders` }}
       />
-      <NavbarComponent tag="button" title="Выход" onClick={() => {}} />
+
+      {user?.role === "ADMIN" && (
+        <NavbarComponent
+          tag="link"
+          title="Панель управления"
+          link={{
+            id: "admin-panel",
+            href: `/profile/${user.id}/admin-panel`,
+          }}
+        />
+      )}
+
+      <AlertDialog>
+        <AlertDialogTrigger className="text-left">Выход</AlertDialogTrigger>
+
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Вы действительно хотите выйти из аккаунта?
+            </AlertDialogTitle>
+          </AlertDialogHeader>
+
+          <AlertDialogFooter>
+            <AlertDialogCancel>Отмена</AlertDialogCancel>
+            <AlertDialogAction onClick={handleSignOut}>Выйти</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

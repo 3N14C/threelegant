@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: "https://threelegant.vercel.app/api",
+  baseURL: "http://localhost:3000/api",
 });

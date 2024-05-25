@@ -10,7 +10,7 @@ const getNewArrivalsProducts = async () => {
   const products = await prisma.product.findMany({
     where: {
       createdAt: {
-        gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+        gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days,
       },
     },
   });
@@ -25,12 +25,12 @@ export const NewArrivals: FC = async () => {
     <div className="">
       <div className="flex items-end justify-between lg:mx-0 mx-[40px]">
         <p className="font-[500] text-[40px] max-w-[150px] -tracking-[0.01rem] leading-[110%]">
-          New Arrivals
+          Новые поступления
         </p>
 
         <div className="max-[845px]:hidden">
           <LinkUnderline
-            title="More Products"
+            title="Каталог"
             href={`/shop?categoryId=all-rooms&${shopParams}`}
           />
         </div>

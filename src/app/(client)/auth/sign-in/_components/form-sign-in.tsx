@@ -12,8 +12,13 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { ButtonAuth } from "../../_components/ui/button-auth";
 import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { signIn } from "@/actions/auth/sign-in";
+import { parseAsString, useQueryState } from "nuqs";
+import { Loader2 } from "lucide-react";
 
 export const FormSignIn: FC = ({}) => {
+  const [callbackUrl] = useQueryState("callbackUrl", parseAsString);
   const router = useRouter();
 
   const {
@@ -24,23 +29,33 @@ export const FormSignIn: FC = ({}) => {
     resolver: zodResolver(formSignInSchema),
   });
 
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: signIn,
+  });
+
+  const handleOnsubmit = async (data: z.infer<typeof formSignInSchema>) => {
+    await mutateAsync({
+      email: data.email,
+      password: data.password,
+      callbackUrl: callbackUrl ?? "/",
+    });
+  };
+
   return (
     <div className="">
       <form
         className="flex flex-col gap-[25px]"
-        onSubmit={handleSubmit((data) => console.log(data))}
+        onSubmit={handleSubmit(handleOnsubmit)}
       >
         <div className="">
           <Input
-            {...register("emailOrUsername")}
-            placeholder="Имя пользователя или почта"
+            {...register("email")}
+            placeholder="Ваша почта"
             className="rounded-lg w-full"
           />
 
-          {errors.emailOrUsername && (
-            <p className="text-red-500 text-sm">
-              {errors.emailOrUsername.message}
-            </p>
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email.message}</p>
           )}
         </div>
 
@@ -57,9 +72,14 @@ export const FormSignIn: FC = ({}) => {
         </div>
 
         <ButtonAuth
-          title="Войти в аккаунт"
-          onClick={async () => (isSubmitSuccessful ? router.push("/") : null)}
-        />
+          disabled={isPending}
+          className="disabled:bg-primary/50"
+          onClick={async () =>
+            isSubmitSuccessful ? router.push(callbackUrl ?? "/") : null
+          }
+        >
+          {isPending ? <Loader2 className="animate-spin" /> : "Войти в аккаунт"}
+        </ButtonAuth>
       </form>
     </div>
   );

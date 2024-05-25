@@ -7,11 +7,15 @@ export const getProductById = async ({
   take,
 }: {
   id: string;
-  take: number;
+  take?: number;
 }) => {
-  const product = await axiosInstance.get<TProduct>(
-    `/products/${id}?take=${take}`
-  );
+  if (take) {
+    const product = await axiosInstance.get<TProduct>(
+      `/products/${id}?take=${take}`
+    );
+    return product.data;
+  }
 
+  const product = await axiosInstance.get<Product>(`/products/${id}`);
   return product.data;
 };

@@ -20,7 +20,7 @@ export const InputValidated: FC<IProps> = ({
   ...props
 }) => {
   return (
-    <div className="">
+    <div className="w-full">
       <Input
         {...props}
         {...register}

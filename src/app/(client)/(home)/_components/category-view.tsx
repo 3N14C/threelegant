@@ -35,7 +35,7 @@ export const CategoryView: FC = async () => {
                 <p className="font-[500] text-[34px]">{category.name}</p>
 
                 <LinkUnderline
-                  title="shop now"
+                  title="Каталог"
                   href={`/shop?categoryId=${category.id}&${shopParams}`}
                 />
               </div>
@@ -63,7 +63,7 @@ export const CategoryView: FC = async () => {
                   </p>
 
                   <LinkUnderline
-                    title="shop now"
+                    title="Каталог"
                     href={`/shop?categoryId=${category.id}&${shopParams}`}
                   />
                 </div>

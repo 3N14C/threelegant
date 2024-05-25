@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma-client";
 
 export const POST = async (req: NextRequest) => {
-  const { comment, rating, productId } = await req.json();
+  const { comment, rating, productId, userId } = await req.json();
 
   const review = await prisma.review.create({
     data: {
@@ -13,6 +13,7 @@ export const POST = async (req: NextRequest) => {
           id: productId,
         },
       },
+      userId: userId,
     },
   });
 

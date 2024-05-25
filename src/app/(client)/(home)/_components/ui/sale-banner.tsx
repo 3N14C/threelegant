@@ -16,19 +16,22 @@ export const SaleBanner: FC = () => {
 
       <div className="flex flex-col gap-[15px] lg:p-0 p-[40px]">
         <p className="font-[700] text-base text-[--blue] leading-[100%]">
-          SALE UP TO 35% OFF
+          СКИДКИ ДО 35%
         </p>
 
         <p className="text-[--neutral-07] font-[500] text-[40px] leading-[110%] -tracking-[0.01rem] max-w-[450px]">
-          HUNDREDS of New lower prices!
+          СОТНИ более новых низких цен!
         </p>
 
         <p className="text-[20px] leading-[160%] text-[--neutral-07]">
-          It’s more affordable than ever to give every room in your home a
-          stylish makeover
+          Это значительно более доступно, чем когда-либо ранее, чтобы дать
+          каждой комнате в вашем доме стильный ремонт
         </p>
 
-        <LinkUnderline title="Shop Now" href={`/shop?${shopParams}`} />
+        <LinkUnderline
+          title="Каталог"
+          href={`/shop?categoryId=all-rooms&${shopParams}`}
+        />
       </div>
     </div>
   );

@@ -23,6 +23,7 @@ export const CheckoutNavigation: FC<IProps> = () => {
         {pageTitle?.name}
       </p>
 
+      {/* DESKTOP VERSION */}
       <div className="hidden lg:block mt-10">
         <div className="grid grid-cols-3 items-center justify-items-center">
           {checkoutNavgaiton.map((nav, idx) => (
@@ -91,12 +92,13 @@ export const CheckoutNavigation: FC<IProps> = () => {
         </div>
       </div>
 
+      {/* MOBILE VERSION */}
       <div className="block lg:hidden mt-10">
         <div className="flex items-center gap-3 border-b border-black pb-2">
           <Button disabled className="rounded-full w-10 h-10">
-            {currentPage === "cart" && 1}
-            {currentPage === "information" && 2}
-            {currentPage === "order" && 3}
+            {currentPage.includes("cart") && 1}
+            {currentPage.includes("information") && 2}
+            {currentPage.includes("order") && 3}
           </Button>
 
           <p className="">

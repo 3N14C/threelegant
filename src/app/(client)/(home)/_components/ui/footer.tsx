@@ -14,8 +14,8 @@ export const Footer: FC = () => {
           <div className="flex lg:flex-row flex-col items-center lg:gap-[30px] gap-2">
             <Logo className="text-white" />
             <div className="bg-[--neutral-04] w-[1px] h-6 rotate-90 lg:rotate-0" />
-            <p className="text-[--neutral-03] capitalize text-sm leading-[157%]">
-              gift & decoration store
+            <p className="text-[--neutral-03] text-sm leading-[157%]">
+              Магазин подарков и украшений
             </p>
           </div>
 
@@ -35,21 +35,21 @@ export const Footer: FC = () => {
         <div className="border-t-[0.50px] border-[--neutral-04] mt-[50px]">
           <div className="flex lg:flex-row flex-col items-center gap-[30px] pt-[15px]">
             <p className="text-[12px] text-[--neutral-03] leading-[167%]">
-              Copyright © 2022 3legant. All rights reserved.
+              Copyright © 2022 3legant. Все права защищены.
             </p>
 
             <Link
               href={"/privacy-policy"}
-              className="text-[12px] font-semibold text-[--neutral-01] leading-[167%]"
+              className="text-[12px] font-semibold text-[--neutral-01] leading-[167%] tracking-wider"
             >
-              Privacy Policy
+              Политика конфиденциальности
             </Link>
 
             <Link
               href={"/terms-of-use"}
               className="text-[12px] font-semibold text-[--neutral-01] leading-[167%]"
             >
-              Terms of Use
+              Условия использования
             </Link>
           </div>
         </div>

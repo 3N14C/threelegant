@@ -14,6 +14,7 @@ interface IOrder {
   code: string;
   totalSum: number;
   productId: string[];
+  userId: string;
 }
 
 export const POST = async (req: NextRequest) => {
@@ -30,6 +31,7 @@ export const POST = async (req: NextRequest) => {
     code,
     totalSum,
     productId,
+    userId,
   }: IOrder = await req.json();
 
   const order = await prisma.order.create({
@@ -50,6 +52,7 @@ export const POST = async (req: NextRequest) => {
           id,
         })),
       },
+      userId: userId,
     },
   });
 

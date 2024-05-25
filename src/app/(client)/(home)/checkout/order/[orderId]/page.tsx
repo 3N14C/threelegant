@@ -10,7 +10,7 @@ interface Props {
 const Page: NextPage<Props> = ({ params }) => {
   return (
     <div className="mt-20">
-      <div className="text-center flex flex-col gap-3">
+      <div className="lg:text-center text-left flex flex-col gap-3">
         <p className="text-[--neutral-04] text-2xl font-medium">
           Спасибо вам!🎉
         </p>

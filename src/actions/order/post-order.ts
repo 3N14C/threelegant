@@ -10,6 +10,7 @@ export const createOrder = async (
     code: string;
     totalSum: number;
     productId: string[];
+    userId: string;
   }
 ) => {
   const response = await axiosInstance.post<Order>("/order/create", data);

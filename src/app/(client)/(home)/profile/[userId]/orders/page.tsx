@@ -6,7 +6,9 @@ interface Props {}
 const Page: NextPage<Props> = ({}) => {
   return (
     <div>
-      <p className="font-semibold text-xl">История заказов</p>
+      <div className="">
+        <p className="font-semibold text-xl">История заказов</p>
+      </div>
 
       <div className="mt-10">
         <OrderTable />

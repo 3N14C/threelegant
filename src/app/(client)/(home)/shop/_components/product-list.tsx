@@ -54,10 +54,11 @@ export const ProductList: FC<IProps> = ({}) => {
   return (
     <div className="">
       <div
-        className={cn("items-center", {
+        className={cn("", {
           "grid grid-cols-3 gap-y-10": orientation === "grid",
-          "grid grid-cols-2 gap-x-20 gap-y-10 w-5/6": orientation === "fluent",
-          "space-y-10": orientation === "table",
+          "grid grid-cols-2 lg:gap-x-20 gap-x-10 mx-auto lg:mx-0 gap-y-10 w-5/6":
+            orientation === "fluent",
+          "flex flex-col gap-10": orientation === "table",
         })}
       >
         {products?.map((product) => (

@@ -11,6 +11,8 @@ import { FormReview } from "./form-review";
 import { LoadingMoreButton } from "@/app/(client)/(home)/_components/loading-more-button";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { determineReview } from "@/functions/determine-review";
+import { User } from "lucia";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface IProps {
   id: string;
@@ -26,6 +28,10 @@ export const ProductReviews: FC<IProps> = ({ id }) => {
     },
   });
 
+  const { data: user } = useQuery<User>({
+    queryKey: ["current-session"],
+  });
+
   const [take, setTake] = useQueryState("take", parseAsInteger.withDefault(5));
 
   useEffect(() => {
@@ -37,24 +43,40 @@ export const ProductReviews: FC<IProps> = ({ id }) => {
       <Title title="Отзывы" />
 
       <div className="mt-10">
-        <FormReview id={id} />
+        {user?.isBlocked ? (
+          <p className="text-red-500">
+            Вы не можете оставлять отзывы, по скольку вы заблокированы.
+          </p>
+        ) : (
+          <FormReview id={id} />
+        )}
       </div>
 
       <div className="mt-[50px]">
-        <Title title={`${product?.reviews.length} ${determineReview(product?.reviews.length ?? 0)}`} />
+        <Title
+          title={`${product?.reviews.length} ${determineReview(product?.reviews.length ?? 0)}`}
+        />
         <div className="mt-[50px] flex flex-col gap-10">
           {product?.reviews.map((review) => (
             <div key={review.id} className="flex items-start gap-5">
-              <Image
+              {/* <Image
                 src={"https://i.pravatar.cc/300"}
                 width={1000}
                 height={1000}
                 alt="kitten"
                 className="rounded-full w-20 h-20"
-              />
+              /> */}
+              <Avatar className="w-20 h-20">
+                <AvatarImage src="/" />
+                <AvatarFallback className="bg-zinc-200">
+                  {review.user.username[0].toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
 
               <div className="flex flex-col gap-5">
-                <p className="text-[--neutral-07] font-semibold">Username</p>
+                <p className="text-[--neutral-07] font-semibold">
+                  {review.user.username}
+                </p>
                 <RatingStars rating={review.rating} />
                 <p className="text-[--neutral-07]">{review.comment}</p>
 
@@ -72,9 +94,9 @@ export const ProductReviews: FC<IProps> = ({ id }) => {
       </div>
 
       <div className="flex justify-center mt-10">
-        {product?.reviews.length && product?.reviews.length + 1 > take && (
+        {product?.reviews.length && product?.reviews.length + 1 > take ? (
           <LoadingMoreButton onClick={() => setTake(take + 5)} />
-        )}
+        ) : null}
       </div>
     </div>
   );

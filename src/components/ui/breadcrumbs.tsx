@@ -31,7 +31,7 @@ export const Breadcrumbs: FC<IProps> = ({ links }) => {
             className="text-sm font-medium leading-[171%] text-[--neutral-04]"
             href="/"
           >
-            Home
+            Главная
           </Link>
         </BreadcrumbItem>
         {links?.map((link, idx) => (

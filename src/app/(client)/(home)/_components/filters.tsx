@@ -34,22 +34,24 @@ export const Filters: FC = () => {
           <SelectValue
             placeholder={
               sortBy === "asc"
-                ? "Sorted at newest"
+                ? "Сначала новые"
                 : sortBy === "desc"
-                  ? "Sorted at latest"
+                  ? "Сначала старые"
                   : "Sort by"
             }
           />
         </SelectTrigger>
 
         <SelectContent>
-          <SelectItem value="asc">Created at newest</SelectItem>
-          <SelectItem value="desc">Created at latest</SelectItem>
+          <SelectItem value="asc">Сначала новые</SelectItem>
+          <SelectItem value="desc">Сначала старые</SelectItem>
         </SelectContent>
       </Select>
 
       <div className="flex items-center">
-        <SortGrid grid={grid || ""} onClick={() => setGrid(Grid.grid)} />
+        <div className="lg:block hidden">
+          <SortGrid grid={grid || ""} onClick={() => setGrid(Grid.grid)} />
+        </div>
         <SortFluent fluent={grid || ""} onClick={() => setGrid(Grid.fluent)} />
         <SortTable table={grid || ""} onClick={() => setGrid(Grid.table)} />
       </div>
