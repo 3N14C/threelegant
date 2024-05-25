@@ -1,6 +1,7 @@
 "use client";
 
 import { getAllProducts } from "@/actions/product/get-all";
+import { removeProductById } from "@/actions/product/remove-by-id";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,21 +14,33 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { FC } from "react";
+import { toast } from "sonner";
 
 export const ProductsList: FC = () => {
   const pathname = usePathname();
 
-  const { data: products } = useQuery({
-    queryKey: ["users-list"],
+  const { data: products, refetch } = useQuery({
+    queryKey: ["products-list"],
     queryFn: getAllProducts,
   });
 
-  const handleRemoveProduct = async () => {};
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: removeProductById,
+    onSuccess: () => {
+      toast.success("Товар удален");
+      refetch()
+    },
+  });
+
+  const handleRemoveProduct = async (productId: string) => {
+    await mutateAsync({ productId });
+  };
 
   return (
     <div className="">
@@ -107,10 +120,15 @@ export const ProductsList: FC = () => {
                     </Link>
 
                     <Button
+                      disabled={isPending}
                       variant={"destructive"}
-                      onClick={handleRemoveProduct}
+                      onClick={() => handleRemoveProduct(product.id)}
                     >
-                      Удалить
+                      {isPending ? (
+                        <Loader2 className="animate-spin" />
+                      ) : (
+                        "Удалить"
+                      )}
                     </Button>
                   </div>
                 </div>
