@@ -16,6 +16,6 @@ export const getProductById = async ({
     return product.data;
   }
 
-  const product = await axiosInstance.get<Product>(`/products/${id}`);
+  const product = await axiosInstance.get<TProduct>(`/products/${id}`);
   return product.data;
 };
