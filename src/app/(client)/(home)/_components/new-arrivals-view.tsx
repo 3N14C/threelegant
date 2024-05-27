@@ -51,7 +51,7 @@ export const NewArrivals: FC = async () => {
 
       <div className="m-[40px] lg:hidden">
         <LinkUnderline
-          title="More Products"
+          title="Каталог"
           href={`/shop?categoryId=all-rooms&${shopParams}`}
         />
       </div>

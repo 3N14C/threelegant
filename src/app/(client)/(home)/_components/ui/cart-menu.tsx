@@ -7,19 +7,27 @@ import { useCart } from "@/store/cart-store";
 import { ShoppingBag, X } from "lucide-react";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { CartProductCounter } from "./cart-prodcut-counter";
 import { ProductPrice } from "./product-price";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export const CartMenu: FC = () => {
+  const pathname = usePathname();
   const { items, removeItem, totalPrice } = useCart();
   const [open, setOpen] = useState<boolean>(false);
+  const [hover, setHover] = useState<string | null>(null);
 
   const handleRemove = (id: string) => {
     removeItem(id);
     toast.success("Товар удален из корзины");
   };
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -37,15 +45,15 @@ export const CartMenu: FC = () => {
                 {items.map((product) => (
                   <div
                     key={product.id}
-                    className="flex items-center justify-between"
+                    className="flex lg:flex-row flex-col lg:items-center justify-between"
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex lg:flex-row flex-col lg:items-center gap-3">
                       <Image
                         src={product.img}
                         alt={product.name}
                         width={1000}
                         height={1000}
-                        className="w-[150px] h-[150px]"
+                        className="lg:w-[150px] lg:h-[150px]"
                       />
 
                       <div className="flex flex-col items-start gap-2">
@@ -54,13 +62,36 @@ export const CartMenu: FC = () => {
                       </div>
                     </div>
 
-                    <div className="flex flex-col gap-3 items-center">
+                    <div className="flex flex-col gap-3 lg:items-center">
                       <ProductPrice price={product.price} />
 
-                      <X
-                        className="text-[--neutral-04] cursor-pointer hover:text-red-400 transition duration-300"
+                      <div
+                        onMouseEnter={() => setHover(product.id)}
+                        onMouseLeave={() => setHover(null)}
+                        className={cn(
+                          "flex items-center justify-end cursor-pointer"
+                        )}
                         onClick={() => handleRemove(product.id)}
-                      />
+                      >
+                        <X
+                          className={cn(
+                            "text-[--neutral-04] transition duration-300",
+                            {
+                              "text-red-500": hover === product.id,
+                            }
+                          )}
+                        />
+                        <p
+                          className={cn(
+                            "text-[--neutral-04] text-sm transition duration-300",
+                            {
+                              "text-red-500": hover === product.id,
+                            }
+                          )}
+                        >
+                          Удалить
+                        </p>
+                      </div>
                     </div>
                   </div>
                 ))}

@@ -8,7 +8,7 @@ export const InputSearch: FC = () => {
   return (
     <div className="flex items-center border border-[--neutral-04] rounded-lg px-[15px]">
       <Search size={22} />
-      <Input placeholder="Search" className="border-0 text-[--neutral-07] text-sm" />
+      <Input placeholder="Поиск" className="border-0 text-[--neutral-07] text-sm" />
     </div>
   );
 };

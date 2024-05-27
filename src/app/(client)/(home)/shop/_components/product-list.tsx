@@ -27,7 +27,7 @@ export const ProductList: FC<IProps> = ({}) => {
     queryKey: ["product-by-slug"],
     queryFn: async () => {
       const response = await getProductsBySlug({
-        categoryId: categoryId || "all-rooms",
+        categoryId: categoryId as string,
         price: price || 0,
         sortBy: sortBy as Prisma.SortOrder,
         take: take || 9,
@@ -35,7 +35,6 @@ export const ProductList: FC<IProps> = ({}) => {
 
       return response;
     },
-    // notifyOnChangeProps: ["data"],
   });
 
   useEffect(() => {

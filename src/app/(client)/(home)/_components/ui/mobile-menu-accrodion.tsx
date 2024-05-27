@@ -13,17 +13,17 @@ import { FC, useState } from "react";
 const categoryLinks = [
   {
     id: "living-room",
-    name: "Living Room",
+    name: "Гостиная",
   },
 
   {
     id: "bedroom",
-    name: "Bedroom",
+    name: "Спальня",
   },
 
   {
     id: "kitchen",
-    name: "Kitchen",
+    name: "Кухня",
   },
 ];
 
@@ -36,12 +36,12 @@ export const MobileMenuAccordion: FC<IProps> = ({ open, setOpen }) => {
   return (
     <div className="text-[--neutral-07] text-sm font-medium leading-[171%]">
       <Link onClick={() => setOpen(false)} href={"/"} className="">
-        Home
+        Главная
       </Link>
 
       <Accordion type="multiple" className="">
         <AccordionItem value="shop">
-          <AccordionTrigger>Shop</AccordionTrigger>
+          <AccordionTrigger>Каталог</AccordionTrigger>
           <AccordionContent>
             <div className="flex flex-col gap-5 ml-5">
               {categoryLinks.map((category) => (
@@ -57,16 +57,7 @@ export const MobileMenuAccordion: FC<IProps> = ({ open, setOpen }) => {
             </div>
           </AccordionContent>
         </AccordionItem>
-
-        <AccordionItem value="product">
-          <AccordionTrigger>Product</AccordionTrigger>
-          <AccordionContent>Product content</AccordionContent>
-        </AccordionItem>
       </Accordion>
-
-      <Link href={"/contact-us"} className="capitalize">
-        contact us
-      </Link>
     </div>
   );
 };

@@ -5,7 +5,7 @@ export const GET = async (req: NextRequest) => {
   const searchParams = req.nextUrl.searchParams;
 
   const input = {
-    categoryId: searchParams.get("categoryId") || "all-rooms",
+    categoryId: searchParams.get("categoryId"),
     sortBy: searchParams.get("sortBy") as "asc" | "desc",
     take: Number(searchParams.get("take")) || 9,
     price: Number(searchParams.get("price")) || 0,
@@ -30,7 +30,7 @@ export const GET = async (req: NextRequest) => {
   } else {
     const products = await prisma.product.findMany({
       where: {
-        categoryId: input.categoryId,
+        categoryId: input.categoryId as string,
         price: {
           gte: input.price,
         },

@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { User } from "lucia";
 import { Link } from "next-view-transitions";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FC } from "react";
 
 type Tag = "button" | "link";
@@ -65,6 +65,7 @@ const NavbarComponent: FC<IPropsNAvbarComponent> = ({
 };
 
 export const ProfileNavbar: FC = ({}) => {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const pathname = usePathname();
   const parts = pathname.split("/");
@@ -82,7 +83,10 @@ export const ProfileNavbar: FC = ({}) => {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: signOut,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["current-session"] });
+      queryClient.invalidateQueries({
+        queryKey: ["current-session", "current-user-session"],
+      });
+      router.replace("/");
     },
   });
 

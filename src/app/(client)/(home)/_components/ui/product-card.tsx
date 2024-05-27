@@ -122,7 +122,7 @@ export const ProductCard: FC<IProps> = ({ product, orientation }) => {
 
   return (
     <div
-      className="relative w-fit flex flex-col items-center lg:block"
+      className="relative w-fit flex flex-col lg:items-center lg:block"
       onMouseEnter={() => setHover(product.id)}
       onMouseLeave={() => setHover(null)}
     >
@@ -140,15 +140,14 @@ export const ProductCard: FC<IProps> = ({ product, orientation }) => {
       </Link>
 
       <div
-        className={cn("lg:opacity-0 opacity-100 transition duration-300", {
-          "lg:opacity-100": hover === product.id,
-        })}
+        className={cn(
+          "lg:opacity-0 w-full opacity-100 transition duration-300",
+          {
+            "lg:opacity-100": hover === product.id,
+          }
+        )}
       >
-        {/* <div className="absolute top-5 right-4 bg-white rounded-full p-2 shadow-[0_8px_16px_rgba(15,15,15,0.12)] cursor-pointer">
-          <Heart />
-        </div> */}
-
-        <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-full lg:block hidden">
+        <div className="absolute bottom-16 left-1/2 -translate-x-1/2 w-full lg:block hidden">
           <Button
             onClick={() => handleAddToCart(product.id)}
             className="w-full"
@@ -160,7 +159,7 @@ export const ProductCard: FC<IProps> = ({ product, orientation }) => {
         <Button
           size={"sm"}
           onClick={() => handleAddToCart(product.id)}
-          className="lg:hidden block text-sm"
+          className="lg:hidden block text-sm w-full"
         >
           В корзину
         </Button>
