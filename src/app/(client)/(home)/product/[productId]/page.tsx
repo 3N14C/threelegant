@@ -15,7 +15,7 @@ interface Props {
 const Page: NextPage<Props> = ({ params, searchParams }) => {
   return (
     <div>
-      <div className="mt-[50px]">
+      <div className="mt-[50px] lg:px-0 px-10">
         <Suspense fallback={<>Loading...</>}>
           <ProductPage id={params.productId} />
         </Suspense>

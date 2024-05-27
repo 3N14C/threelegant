@@ -1,17 +1,14 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
-import { usePathname } from "next/navigation";
-import { FC, Fragment } from "react";
+import { Link } from "next-view-transitions";
+import { FC, Fragment, useEffect, useState } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "./breadcrumb";
-import { Link } from "next-view-transitions";
 
 interface IProps {
   links?: {
@@ -21,8 +18,6 @@ interface IProps {
 }
 
 export const Breadcrumbs: FC<IProps> = ({ links }) => {
-  const pathname = usePathname();
-
   return (
     <Breadcrumb>
       <BreadcrumbList className="">

@@ -54,7 +54,7 @@ export const ProductPage: FC<IProps> = ({ id }) => {
     <div className="">
       <Breadcrumbs
         links={[
-          { title: "Shop", href: `/shop?categoryId=all-rooms&${shopParams}` },
+          { title: "Каталог", href: `/shop?categoryId=all-rooms&${shopParams}` },
           {
             title: product?.category.name,
             href: `/shop?categoryId=${product?.category.id}&${shopParams}`,
@@ -64,13 +64,13 @@ export const ProductPage: FC<IProps> = ({ id }) => {
       />
 
       <div className="mt-10">
-        <div className="flex justify-between items-center">
+        <div className="flex lg:flex-row flex-col lg:gap-40 items-center">
           <Image
             src={product?.img || ""}
             alt={product?.name || ""}
             width={1000}
             height={1000}
-            className="w-[550px] h-[730px]"
+            className="lg:w-[550px] lg:h-[730px] w-full"
           />
 
           <div className="flex flex-col gap-4">
@@ -149,7 +149,7 @@ export const ProductPage: FC<IProps> = ({ id }) => {
                 }
               )}
             >
-              <p className="text-lg leading-[178%] font-medium -tracking-[0.02em]">
+              <p className="lg:text-lg leading-[178%] font-medium -tracking-[0.02em]">
                 {nav.name}
               </p>
             </div>

@@ -39,6 +39,8 @@ export const ProductsTable: FC = () => {
     toast.success("Товар удален из корзины");
   };
 
+  if (items.length === 0) return null;
+
   return (
     <div className="">
       <div className="hidden lg:block">

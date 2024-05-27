@@ -7,8 +7,10 @@ import { OrderSelect } from "./order-select";
 import { ButtonLink } from "@/components/ui/button-link";
 
 export const CartSummary: FC = () => {
-  const { totalPrice, shippingType } = useCart();
+  const { totalPrice, shippingType, items } = useCart();
   const priceWithShipping = totalPrice + shippingType.price;
+
+  if (items.length === 0) return null;
 
   return (
     <div className="border border-black rounded-md p-5">

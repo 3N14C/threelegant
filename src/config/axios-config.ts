@@ -1,5 +1,8 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: "https://threelegant.vercel.app/api",
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? "https://threelegant.vercel.app/api/api"
+      : "http://localhost:3400/api",
 });

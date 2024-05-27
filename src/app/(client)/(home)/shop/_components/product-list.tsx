@@ -55,7 +55,8 @@ export const ProductList: FC<IProps> = ({}) => {
     <div className="">
       <div
         className={cn("", {
-          "grid grid-cols-3 gap-y-10": orientation === "grid",
+          "grid lg:grid-cols-3 grid-cols-2 lg:gap-x-0 gap-x-10 gap-y-10":
+            orientation === "grid",
           "grid grid-cols-2 lg:gap-x-20 gap-x-10 mx-auto lg:mx-0 gap-y-10 w-5/6":
             orientation === "fluent",
           "flex flex-col gap-10": orientation === "table",

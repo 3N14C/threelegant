@@ -9,7 +9,7 @@ interface Props {
 
 const Page: NextPage<Props> = ({ params }) => {
   return (
-    <div className="mt-10">
+    <div className="mt-10 lg:px-0 px-10">
       <ProductReviews id={params.productId} />
     </div>
   );

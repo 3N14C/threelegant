@@ -65,26 +65,21 @@ export const ProductReviews: FC<IProps> = ({ id }) => {
         <div className="mt-[50px] flex flex-col gap-10">
           {product?.reviews.map((review) => (
             <div key={review.id} className="flex items-start gap-5">
-              {/* <Image
-                src={"https://i.pravatar.cc/300"}
-                width={1000}
-                height={1000}
-                alt="kitten"
-                className="rounded-full w-20 h-20"
-              /> */}
-              <Avatar className="w-20 h-20">
+              <Avatar className="lg:w-20 lg:h-20">
                 <AvatarImage src="/" />
                 <AvatarFallback className="bg-zinc-200">
                   {review.user.username[0].toUpperCase()}
                 </AvatarFallback>
               </Avatar>
 
-              <div className="flex flex-col gap-5">
+              <div className="flex flex-col lg:gap-5 gap-1">
                 <p className="text-[--neutral-07] font-semibold">
                   {review.user.username}
                 </p>
                 <RatingStars rating={review.rating} />
-                <p className="text-[--neutral-07]">{review.comment}</p>
+                <p className="text-[--neutral-07] lg:mt-0 mt-5">
+                  {review.comment}
+                </p>
 
                 <p
                   className={cn(

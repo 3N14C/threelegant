@@ -1,21 +1,53 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button-link";
+import { shopParams } from "@/constants/shop-params";
 import { checkoutNavgaiton } from "@/lib/checkout-navigation";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/store/cart-store";
 import { Check } from "lucide-react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { FC } from "react";
 
 interface IProps {}
 
 export const CheckoutNavigation: FC<IProps> = () => {
+  const { items } = useCart();
+
   const pathname = usePathname();
 
   const currentPage = pathname.slice(10);
   console.log(currentPage);
 
   const pageTitle = checkoutNavgaiton.find((nav) => nav.id === currentPage);
+
+  if (items.length === 0)
+    return (
+      <div className="flex flex-col items-center gap-5">
+        <p className="text-center font-bold lg:text-5xl text-2xl tracking-wider">
+          Ваша корзина пуста
+        </p>
+
+        <Image
+          src={"/empty-cart.png"}
+          alt="empty-cart"
+          width={500}
+          height={500}
+          className=""
+        />
+
+        <div className="w-1/2 mx-auto mt-10">
+          <ButtonLink
+            href={`/shop?categoryId=all-rooms&${shopParams}`}
+            className=""
+          >
+            Перейти в каталог
+          </ButtonLink>
+        </div>
+      </div>
+    );
 
   return (
     <div className="">

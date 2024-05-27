@@ -7,9 +7,12 @@ import { FC, useEffect } from "react";
 
 export const OrderSelect: FC = () => {
   const { shippingType, changeShipping } = useCart();
-  
+  const currentOrderPrice = orderPriceList.find(
+    (type) => type.id === shippingType.id
+  )?.id
+
   useEffect(() => {
-    changeShipping(orderPriceList[0].id);
+    changeShipping(currentOrderPrice!);
   }, []);
 
   return (

@@ -49,10 +49,15 @@ export const Filters: FC = () => {
       </Select>
 
       <div className="flex items-center">
-        <div className="lg:block hidden">
+        <div className="">
           <SortGrid grid={grid || ""} onClick={() => setGrid(Grid.grid)} />
         </div>
-        <SortFluent fluent={grid || ""} onClick={() => setGrid(Grid.fluent)} />
+        <div className="lg:block hidden">
+          <SortFluent
+            fluent={grid || ""}
+            onClick={() => setGrid(Grid.fluent)}
+          />
+        </div>
         <SortTable table={grid || ""} onClick={() => setGrid(Grid.table)} />
       </div>
     </div>

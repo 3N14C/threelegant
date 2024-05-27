@@ -10,7 +10,7 @@ export const Title: FC<IProps> = ({ title, className }) => {
   return (
     <p
       className={cn(
-        "font-[500] text-[40px] -tracking-[0.01rem] leading-[110%]",
+        "font-[500] lg:text-[40px] text-2xl -tracking-[0.01rem] leading-[110%]",
         className
       )}
     >

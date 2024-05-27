@@ -10,6 +10,8 @@ export const OrderSummary: FC = () => {
   const { items, totalPrice, shippingType } = useCart();
   const priceWithShipping = totalPrice + shippingType.price;
 
+  if (items.length === 0) return null;
+
   return (
     <div className="border border-black rounded-lg p-10  h-fit">
       <p className="text-3xl font-bold tracking-wider mb-5">Ваш заказ</p>
