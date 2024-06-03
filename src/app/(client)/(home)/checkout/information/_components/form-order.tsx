@@ -14,6 +14,7 @@ import { createOrder } from "@/actions/order/post-order";
 import { useCart } from "@/store/cart-store";
 import { useRouter } from "next/navigation";
 import { User } from "lucia";
+import { getCurrentSession } from "@/actions/user/currentSession";
 
 export const FormOrder: FC = () => {
   const code = useCode();
@@ -34,8 +35,13 @@ export const FormOrder: FC = () => {
     resolver: zodResolver(formOrderSchema),
   });
 
-  const { data: user } = useQuery<User>({
-    queryKey: ["current-session"],
+  const { data: user } = useQuery({
+    queryKey: ["current-session-order"],
+    queryFn: async () => {
+      const { user } = await getCurrentSession();
+
+      return user;
+    },
   });
 
   const { mutateAsync, isPending } = useMutation({
