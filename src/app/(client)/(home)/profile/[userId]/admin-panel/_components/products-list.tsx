@@ -73,7 +73,7 @@ export const ProductsList: FC = () => {
 
           <ScrollArea
             className={cn("w-full", {
-              "h-[500px]": products && products.length > 4,
+              "h-[500px]": products && products.length > 3,
             })}
           >
             <div className="flex flex-col gap-4 w-full">
