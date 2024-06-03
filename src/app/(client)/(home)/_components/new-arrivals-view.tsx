@@ -10,7 +10,7 @@ const getNewArrivalsProducts = async () => {
   const products = await prisma.product.findMany({
     where: {
       createdAt: {
-        gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days,
+        gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days
       },
     },
   });
