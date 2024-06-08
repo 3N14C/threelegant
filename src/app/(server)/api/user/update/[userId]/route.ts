@@ -9,6 +9,8 @@ interface IParams {
   };
 }
 
+export const dynamic = "force-dynamic";
+
 export const PATCH = async (req: NextRequest, ctx: any) => {
   const { params }: IParams = ctx;
   const {

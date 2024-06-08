@@ -5,18 +5,18 @@ export const dynamic = "force-dynamic";
 
 export const GET = async (req: NextRequest) => {
   const { searchParams } = req.nextUrl;
+  const username = searchParams.get("username");
+  const currentUserId = searchParams.get("currentUserId");
 
-  const profileId = searchParams.get("profileId");
-
-  const user = await prisma.user.findUnique({
+  const user = await prisma.user.findMany({
     where: {
-      id: profileId as string,
-    },
-
-    include: {
-      order: true,
+      username: {
+        contains: username as string,
+      },
+      NOT: {
+        id: currentUserId as string,
+      },
     },
   });
-
   return NextResponse.json(user);
 };

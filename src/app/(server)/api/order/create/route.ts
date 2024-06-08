@@ -17,6 +17,8 @@ interface IOrder {
   userId: string;
 }
 
+export const dynamic = "force-dynamic";
+
 export const POST = async (req: NextRequest) => {
   const {
     firstName,

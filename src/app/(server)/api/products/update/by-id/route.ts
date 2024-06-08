@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma-client";
 
+export const dynamic = "force-dynamic";
+
 export const PATCH = async (req: NextRequest) => {
   const { searchParams } = req.nextUrl;
   const productId = searchParams.get("productId");

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma-client";
 
+export const dynamic = "force-dynamic";
+
 export const PATCH = async (req: NextRequest) => {
   const { isBlocked } = await req.json();
   const { searchParams } = req.nextUrl;

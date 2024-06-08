@@ -15,14 +15,30 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "next-view-transitions";
 import { FC } from "react";
+import { UserSearch } from "./user-search";
+import { parseAsString, useQueryState } from "nuqs";
+import { useSession } from "@/hooks/use-current-session";
+import { UserService } from "@/actions/user/user-service";
 
 export const UsersList: FC = () => {
+  const [username] = useQueryState("username", parseAsString);
+  const { user } = useSession();
+
   const { data: users, isLoading } = useQuery({
-    queryKey: ["get-all-users"],
+    queryKey: ["get-all-users", user],
     queryFn: async () => {
-      const { user } = await getCurrentSession();
       return user && (await getAllUsers({ currentUserId: user?.id }));
     },
+  });
+
+  const { data: filteredUsers } = useQuery({
+    queryKey: ["filtered-users", username, user],
+    queryFn: () =>
+      user &&
+      UserService.getByUsername({
+        username: username as string,
+        currentUserId: user.id ?? "",
+      }),
   });
 
   return (
@@ -60,21 +76,42 @@ export const UsersList: FC = () => {
             })}
           >
             <div className="flex flex-col gap-4">
-              {users?.map((user) => (
-                <Link
-                  href={`/user-profile/${user.id}`}
-                  className="flex items-center gap-2"
-                >
-                  <Avatar>
-                    <AvatarImage src={"/"} />
-                    <AvatarFallback className="bg-zinc-300">
-                      {user.username[0].toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
+              <UserSearch />
+              {username ? (
+                filteredUsers?.map((user) => (
+                  <Link
+                    href={`/user-profile/${user.id}`}
+                    className="flex items-center gap-2"
+                  >
+                    <Avatar>
+                      <AvatarImage src={"/"} />
+                      <AvatarFallback className="bg-zinc-300">
+                        {user.username[0].toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
 
-                  <p className="font-semibold text-lg">{user.username}</p>
-                </Link>
-              ))}
+                    <p className="font-semibold text-lg">{user.username}</p>
+                  </Link>
+                ))
+              ) : (
+                <>
+                  {users?.map((user) => (
+                    <Link
+                      href={`/user-profile/${user.id}`}
+                      className="flex items-center gap-2"
+                    >
+                      <Avatar>
+                        <AvatarImage src={"/"} />
+                        <AvatarFallback className="bg-zinc-300">
+                          {user.username[0].toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+
+                      <p className="font-semibold text-lg">{user.username}</p>
+                    </Link>
+                  ))}
+                </>
+              )}
             </div>
           </ScrollArea>
         </DialogContent>

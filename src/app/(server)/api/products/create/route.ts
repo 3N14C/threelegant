@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma-client";
 import { IProductFields } from "@/types/product-fields-interface";
 
+export const dynamic = "force-dynamic";
+
 export const POST = async (req: NextRequest) => {
   const data: IProductFields = await req.json();
 
