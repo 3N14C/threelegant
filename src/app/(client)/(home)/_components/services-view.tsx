@@ -6,7 +6,7 @@ export const ServicesView: FC = () => {
     <div className="lg:flex grid grid-cols-2 lg:gap-0 gap-[25px] justify-items-center justify-between items-center">
       <ServiceCard
         icon="Truck"
-        title="Бесплтаня доставка"
+        title="Бесплатная доставка"
         body={`При заказе от ${parseFloat("9000").toLocaleString("ru-RU", {
           style: "currency",
           currency: "RUB",
