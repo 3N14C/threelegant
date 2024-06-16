@@ -15,7 +15,7 @@ export const Footer: FC = () => {
             <Logo className="text-white" />
             <div className="bg-[--neutral-04] w-[1px] h-6 rotate-90 lg:rotate-0" />
             <p className="text-[--neutral-03] text-sm leading-[157%]">
-              Магазин подарков и украшений
+              Магазин мебели и декора
             </p>
           </div>
 

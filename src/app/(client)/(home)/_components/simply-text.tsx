@@ -15,7 +15,7 @@ export const SimplyText: FC = () => {
       <p className="font-[600] lg:text-base text-[14px] text-[--neutral-05] lg:max-w-[425px]">
         3legant{" "}
         <span className="font-[400] text-[--neutral-04]">
-          — магазин подарков и украшений, расположенный в Иркутске с 2019 года.
+          — магазин мебели и декора, расположенный в Иркутске с 2019 года.
         </span>
       </p>
     </div>
